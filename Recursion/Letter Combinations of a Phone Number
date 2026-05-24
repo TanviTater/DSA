@@ -1,0 +1,32 @@
+// LeetCode -> 17. Letter Combinations of a Phone Number
+class Solution {
+public:
+void solve(int i,string digits,string temp,vector<string>&ans,unordered_map<int,vector<char>>mp){
+    if(i>=digits.size()){
+        ans.push_back(temp);
+        return;
+    }
+    int digit = digits[i]-'0';
+    for(auto ch:mp[digit]){
+        temp.push_back(ch);
+        solve(i+1,digits,temp,ans,mp);
+        temp.pop_back();
+    }
+}
+    vector<string> letterCombinations(string digits) {
+        if(digits.size() == 0) return {};
+        unordered_map<int,vector<char>>mp;
+        mp[2] = {'a','b','c'};
+        mp[3] = {'d','e','f'};
+        mp[4] = {'g','h','i'};
+        mp[5] = {'j','k','l'};
+        mp[6] = {'m','n','o'};
+        mp[7] = {'p','q','r','s'};
+        mp[8] = {'t','u','v'};
+        mp[9] = {'w','x','y','z'};
+        vector<string>ans;
+        string temp="";
+        solve(0,digits,temp,ans,mp);
+        return ans;
+    }
+};

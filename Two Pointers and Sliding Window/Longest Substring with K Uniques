@@ -1,0 +1,23 @@
+// GeeksForGeeks -> Longest Substring with K Uniques
+class Solution {
+  public:
+    int longestKSubstr(string &s, int k) {
+        unordered_map<char,int>mp;
+        int left = 0;
+        int len = -1;
+        for(int i =0;i<s.size();i++){
+            mp[s[i]]++;
+            while(mp.size()>k){
+                mp[s[left]]--;
+                if(mp[s[left]] == 0){
+                    mp.erase(s[left]);
+                }
+                left++;
+            }
+            if(mp.size()==k){
+                len = max(len,i-left+1);
+            }
+        }
+        return len;
+    }
+};

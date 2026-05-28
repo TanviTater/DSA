@@ -1,0 +1,25 @@
+// LeetCode -> 1248. Count Number of Nice Subarrays
+class Solution {
+public:
+int solve(vector<int>&nums,int k){
+    int sum = 0;
+    int left = 0;
+    int niceSubarrays = 0;
+    for(int i =0;i<nums.size();i++){
+        sum+=nums[i];
+        while(sum>k){
+            sum -= nums[left];
+            left++;
+        }
+        niceSubarrays += i-left+1;
+    }
+    return niceSubarrays;
+}
+    int numberOfSubarrays(vector<int>& nums, int k) {
+        for(int i = 0;i<nums.size();i++){
+            if(nums[i] % 2 == 0 ) nums[i] = 0;
+            else nums[i] = 1;
+        }
+        return solve(nums,k)-solve(nums,k-1);
+    }
+};

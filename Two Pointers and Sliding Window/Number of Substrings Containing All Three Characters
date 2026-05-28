@@ -1,0 +1,22 @@
+// LeetCode -> 1358. Number of Substrings Containing All Three Characters
+class Solution {
+public:
+int solve(string s,int k){
+    unordered_map<char,int>mp;
+    int left = 0;
+    int number = 0;
+    for(int i =0;i<s.size();i++){
+        mp[s[i]]++;
+        while(mp.size()>k){
+            mp[s[left]]--;
+            if(mp[s[left]] == 0) mp.erase(s[left]);
+            left++; 
+        }
+        number+=i-left+1;
+    }
+    return number;
+}
+    int numberOfSubstrings(string s) {
+        return solve(s,3)-solve(s,2);
+    }
+};

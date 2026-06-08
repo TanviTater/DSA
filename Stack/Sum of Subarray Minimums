@@ -1,0 +1,55 @@
+// LeetCode -> 907. Sum of Subarray Minimums
+class Solution {
+public:
+const int mod = (int)1e9+7;
+vector<int>getPSEE(vector<int>&arr){
+    stack<int>st;
+    vector<int>psee;
+    for(int i =0;i<arr.size();i++){
+        while(!st.empty() && arr[st.top()]>arr[i]){
+            st.pop();
+        }
+        if(st.empty()){
+            psee.push_back(-1);
+        }
+        else{
+            psee.push_back(st.top());
+        }
+        st.push(i);
+    }
+    return psee;
+}
+vector<int>getNSE(vector<int>&arr){
+    stack<int>st;
+    vector<int>nse;
+    int n = arr.size();
+    for(int i =arr.size()-1;i>=0;i--){
+        while(!st.empty() && arr[st.top()] >= arr[i]){
+            st.pop();
+        }
+        if(st.empty()){
+            nse.push_back(n);
+        }
+        else{
+            nse.push_back(st.top());
+        }
+        st.push(i);
+    }
+    reverse(nse.begin(),nse.end());
+    return nse;
+}
+    int sumSubarrayMins(vector<int>& arr) {
+        vector<int>nse;
+        vector<int>psee;
+        nse = getNSE(arr);
+        psee = getPSEE(arr);
+        int sum = 0;
+        int n = arr.size();
+        for(int i = 0;i<n;i++){
+            int left = i-psee[i];
+            int right = nse[i]-i;
+            sum = (sum + (left*right*1LL*arr[i])%mod)%mod;
+        }
+        return sum;
+    }
+};

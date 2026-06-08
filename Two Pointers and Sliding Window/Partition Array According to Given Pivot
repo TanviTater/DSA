@@ -1,0 +1,31 @@
+// LeetCode -> 2161. Partition Array According to Given Pivot
+class Solution {
+public:
+void solve(vector<int>&nums,int pivot,vector<int>&ans){
+    int s =0;
+    int e =nums.size()-1;
+    vector<int>greater;
+    for(int i = 0;i<nums.size();i++){
+        if(nums[i]<pivot){
+            ans.push_back(nums[i]);
+            s++;
+        }
+        else if(nums[i]>pivot){
+            greater.push_back(nums[i]);
+            e--;
+        }
+    }
+    while(s<=e){
+        ans.push_back(pivot);
+        s++;
+    }
+    for(int num:greater){
+        ans.push_back(num);
+    }
+}
+    vector<int> pivotArray(vector<int>& nums, int pivot) {
+        vector<int>ans;
+        solve(nums,pivot,ans);
+        return ans;
+    }
+};

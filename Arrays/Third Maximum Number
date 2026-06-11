@@ -1,0 +1,25 @@
+// LeetCode -> 414. Third Maximum Number
+
+class Solution {
+public:
+    int thirdMax(vector<int>& nums) {
+        sort(nums.rbegin(),nums.rend());
+        set<int>st;
+        for(int num:nums){
+            st.insert(num);
+        }
+        if(st.size()<3){
+            return nums[0];
+        }
+        int ans = nums[0];
+        int count = 1;
+        for(int i  =1;i<nums.size() && count<3;i++){
+            if(nums[i] == nums[i-1]) continue;
+            else{
+                ans = nums[i];
+                count++;
+            }
+        }
+        return ans;
+    }
+};

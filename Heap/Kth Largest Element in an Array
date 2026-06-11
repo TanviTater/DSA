@@ -1,0 +1,17 @@
+// LeetCode -> 215. Kth Largest Element in an Array
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        int kth = INT_MIN;
+        priority_queue<int>pq;
+        for(int num:nums){
+            pq.push(num);
+        }
+        while(k--){
+            kth = pq.top();
+            pq.pop();
+        }
+        return kth;
+    }
+};

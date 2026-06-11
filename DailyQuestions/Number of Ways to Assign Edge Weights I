@@ -1,0 +1,35 @@
+// LeetCode -> 3558. Number of Ways to Assign Edge Weights I
+class Solution {
+public:
+int mod = 1e9+7;
+long long power(int base,int exponent){
+    if(exponent == 0)return 1;
+    long long result = 0;
+    long long half = power(base,exponent/2);
+    result = (half*half)%mod;
+    if(exponent%2 == 1){
+        result = (result*base)%mod;
+    }
+    return result;
+
+}
+int getDepth(unordered_map<int,vector<int>>&adj,int root,int parent){
+    int maxDepth = 0;
+    for(int &neighbour : adj[root]){
+        if(neighbour == parent) continue;
+        maxDepth = max(maxDepth,getDepth(adj,neighbour,root)+1);
+    }
+    return maxDepth;
+}
+    int assignEdgeWeights(vector<vector<int>>& edges) {
+        unordered_map<int,vector<int>>adj;
+        for(auto edge:edges){
+            int u = edge[0];
+            int v = edge[1];
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        int depth = getDepth(adj,1,-1);
+        return power(2,depth-1);
+    }
+};

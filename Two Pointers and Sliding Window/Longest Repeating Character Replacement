@@ -1,0 +1,23 @@
+// LeetCode -> 424. Longest Repeating Character Replacement
+
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        vector<int>freq(26,0);
+        int maxLen = 0;
+        int maxFreq = 0;
+        int j = 0;
+        int i = 0;
+        while(i<s.size()){
+            freq[s[i]-'A']++;
+            maxFreq = max(maxFreq,freq[s[i]-'A']);
+            if((i-j+1)-maxFreq>k){
+                freq[s[j]-'A']--;
+                j++;
+            }
+            maxLen = max(maxLen,i-j+1);
+            i++;
+        }
+        return maxLen;
+    }
+};

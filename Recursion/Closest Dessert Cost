@@ -1,0 +1,25 @@
+// LeetCode -> 1774. Closest Dessert Cost
+
+class Solution {
+public:
+int cost = 0;
+void solve(int i,vector<int>&toppings,int target,int curr){
+    if(abs(target-curr)<abs(target-cost)){
+        cost = curr;
+    }
+    else if(abs(target-curr) == abs(target-cost)){
+        cost = min(cost,curr);
+    }
+    if(i==toppings.size()) return;
+    solve(i+1,toppings,target,curr);
+    solve(i+1,toppings,target,curr+toppings[i]);
+    solve(i+1,toppings,target,curr+2*toppings[i]);
+}
+    int closestCost(vector<int>& baseCosts, vector<int>& toppingCosts, int target) {
+        cost = baseCosts[0];
+        for(int i =0;i<baseCosts.size();i++){
+            solve(0,toppingCosts,target,baseCosts[i]);
+        }
+        return cost;
+    }
+};

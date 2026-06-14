@@ -1,0 +1,23 @@
+// Coding Ninjas-> Minimum Cost To Connect Sticks
+
+#include<queue>
+long long int minimumCostToConnectSticks(vector<int> &arr) {
+     long long int cost = 0;
+     long long int ans = 0;
+     priority_queue<int,vector<int>,greater<int>>pq;
+     for(int num:arr){
+          pq.push(num);
+     }
+     while(pq.size() != 1){
+          int cost = 0;
+          cost+=pq.top();
+          pq.pop();
+          if(!pq.empty()){
+               cost+=pq.top();
+               pq.pop();
+          }
+          ans+=cost;
+          pq.push(cost);
+     }
+     return ans;
+}

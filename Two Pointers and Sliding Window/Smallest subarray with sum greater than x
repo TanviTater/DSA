@@ -1,0 +1,22 @@
+// GeeksForGeeks -> Smallest subarray with sum greater than x
+
+class Solution {
+  public:
+    int smallestSubWithSum(int x, vector<int>& arr) {
+        int sum = 0;
+        int r =0;
+        int l =0;
+        int len =INT_MAX;
+        while(r<arr.size()){
+            sum+=arr[r];
+            while(sum>x){
+                sum-=arr[l];
+                len = min(len,r-l+1);
+                l++;
+            }
+            r++;
+        }
+        if(len == INT_MAX) return 0;
+        return len;
+    }
+};

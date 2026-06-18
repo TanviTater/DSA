@@ -1,0 +1,15 @@
+// LeetCode -> 1344. Angle Between Hands of a Clock
+
+class Solution {
+public:
+    double angleClock(int hour, int minutes) {
+        double minDeg = minutes*6;
+        hour %= 12;
+        double hourDeg = hour*30+minutes*0.5;
+        double diff = max(minDeg,hourDeg)-min(minDeg,hourDeg);
+        if(diff>180){
+            diff = 360-diff;
+        }
+        return diff;
+    }
+};

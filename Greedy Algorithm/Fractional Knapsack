@@ -1,0 +1,34 @@
+// GeeksForGeeks -> Fractional Knapsack
+
+class Solution {
+  public:
+    double fractionalKnapsack(vector<int>& val, vector<int>& wt, int capacity) {
+        priority_queue<pair<double,int>> pq;
+
+        for(int i = 0; i < val.size(); i++){
+            pq.push({(double)val[i]/wt[i], i});
+        }
+        double maxValue = 0;
+        while(capacity>=0 && !pq.empty()){
+            int idx = pq.top().second;
+            double v = val[idx];
+            double w = wt[idx];
+            if(capacity-w>0){
+                maxValue += v;
+                capacity -= w;
+            }
+            else{
+                if(capacity != 0){
+                    v = ((double)capacity/w)*v;
+                    maxValue += v;
+                    capacity = 0;
+                }
+                else{
+                    break;
+                }
+            }
+            pq.pop();
+        }
+        return maxValue;
+    }
+};

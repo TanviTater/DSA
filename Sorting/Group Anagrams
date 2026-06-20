@@ -1,0 +1,28 @@
+// LeetCode -> 49. Group Anagrams
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<string>temp = strs;
+        int i =0;
+        for(string s : temp){
+            sort(s.begin(),s.end());
+            temp[i++] = s;
+        }
+        unordered_map<string,vector<int>>mp;
+        for(int i =0;i<temp.size();i++){
+            mp[temp[i]].push_back(i);
+        }
+        vector<vector<string>>ans;
+        for(auto& it:mp){
+            string s = it.first;
+            vector<int>idx = it.second;
+            vector<string>temp;
+            for(int i =0;i<idx.size();i++){
+                temp.push_back(strs[idx[i]]);
+            }
+            ans.push_back(temp);
+        }
+        return ans;
+    }
+};

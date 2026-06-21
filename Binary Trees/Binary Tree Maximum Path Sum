@@ -1,0 +1,17 @@
+// LeetCode -> 124. Binary Tree Maximum Path Sum
+
+class Solution {
+public:
+int maxSum = INT_MIN;
+int maxPath(TreeNode* root){
+    if(root == NULL) return 0;
+    int left = max(0,maxPath(root -> left));
+    int right = max(0,maxPath(root -> right));
+    maxSum = max(maxSum,left+right+root->val);
+    return root -> val + max(left,right);
+}
+    int maxPathSum(TreeNode* root) {
+        maxPath(root);
+        return maxSum;
+    }
+};

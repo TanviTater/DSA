@@ -1,0 +1,37 @@
+// LeetCode -> 3020. Find the Maximum Number of Elements in Subset
+
+class Solution {
+public:
+    int maximumLength(vector<int>& nums) {
+        int maxEle = 1;
+        if(nums.size()<=2) return 1;
+        sort(nums.begin(),nums.end());
+        unordered_map<double,int>mp;
+        for(int num:nums) mp[num]++;
+        int countOne = mp[1];
+        if(countOne > 1 && countOne % 2) {
+            mp[1] = 0;
+        }
+        else{
+            if(countOne > 1 && countOne%2 == 0){
+                countOne = countOne-1;
+                mp[1] = 0;
+            }
+        }
+        int ansMax =0;
+        for(int i=nums.size()-1;i>=0;i--){
+            double sqr = sqrt(nums[i]);
+            while(mp.find(sqr) != mp.end()){
+                if(mp[sqr]>=2 && sqr != nums[i]){
+                    maxEle+=2;
+                    mp[sqr] = 0;
+                }
+                else{break;}
+                sqr = sqrt(sqr);
+            }
+            ansMax = max(ansMax,maxEle);
+            maxEle = 1;
+        }
+        return max(ansMax,countOne);
+    }
+};

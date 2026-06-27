@@ -1,0 +1,27 @@
+// GeeksForGeeks -> Stickler Thief
+
+class Solution {
+  public:
+  int solve(vector<int>&arr,int n){
+      if(n < 0) return 0;
+      if(n == 0) return arr[0];
+      int incl = arr[n]+solve(arr,n-2);
+      int excl = solve(arr,n-1);
+      return max(incl,excl);
+  }
+  int solveMem(vector<int>&arr,int n,vector<int>&dp){
+      if(n < 0) return 0;
+      if(n == 0) return arr[0];
+      if(dp[n] != -1) return dp[n];
+      int incl = arr[n]+solveMem(arr,n-2,dp);
+      int excl = solveMem(arr,n-1,dp);
+      return dp[n] = max(incl,excl);
+  }
+    int findMaxSum(vector<int>& arr) {
+        // code here
+        int n = arr.size()-1;
+        vector<int>dp(n+1,-1);
+        // return solve(arr,n);
+        return solveMem(arr,n,dp);
+    }
+};

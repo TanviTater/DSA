@@ -1,0 +1,76 @@
+// GeeksForGeeks -> Top View of Binary Tree
+
+class Solution {
+  public:
+    vector<int> topView(Node *root) {
+        // code here
+        if(!root) return {};
+        vector<int>ans;
+        queue<pair<Node*,pair<int,int>>>q;
+        vector<pair<int, pair<int, pair<int,int>>>> v;  // {col, {row, {index, value}}} 
+        int idx =0;
+        q.push({root,{0,0}});
+        while(!q.empty()){
+            Node* front = q.front().first;
+            int col = q.front().second.first;
+            int row = q.front().second.second;
+            v.push_back({col,{row,{idx++,front->data}}});
+            q.pop();
+            if(front->left){
+                q.push({front->left,{col-1,row+1}});
+            }
+            if(front->right){
+                q.push({front->right,{col+1,row+1}});
+            }
+        }
+        sort(v.begin(),v.end());
+        int prevCol = v[0].first;
+        ans.push_back(v[0].second.second.second);
+        for(int i =1;i<v.size();i++){
+            int col = v[i].first;
+            if(col == prevCol) continue;
+            else{
+                ans.push_back(v[i].second.second.second);
+                prevCol = col;
+            }
+        }
+        return ans;
+    }
+};
+
+
+/*
+class Node {
+  public:
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+
+
+
+// DFS based
+class Solution {
+    map<int,pair<int,int>> m;
+    void dfs(Node*root, int x, int level){
+        if(!root)   return;
+        if(m.count(x) == 0 || m[x].second > level) m[x] = {root->data, level};
+        dfs(root->left, x - 1, level + 1);
+        dfs(root->right, x + 1, level + 1);
+    }
+  public:
+    vector<int> topView(Node *root) {
+        dfs(root, 0, 0);
+        vector<int>v;
+        for(auto e : m)
+            v.push_back(e.second.first);
+        return v;
+    }
+};

@@ -1,0 +1,15 @@
+// LeetCode -> 101. Symmetric Tree
+
+class Solution {
+public:
+bool isSame(TreeNode* leftChild,TreeNode* rightChild){
+    if(!leftChild && !rightChild) return true;
+    if(!leftChild || !rightChild) return false;
+    return leftChild->val == rightChild->val
+            && isSame(leftChild->left , rightChild->right)
+            && isSame(leftChild->right, rightChild->left);
+}
+    bool isSymmetric(TreeNode* root) {
+        return isSame(root->left,root->right);
+    }
+};

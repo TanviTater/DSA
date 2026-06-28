@@ -2,21 +2,21 @@
 
 class Solution {
 public:
-    int solve(int m,int n,int i,int j,int &count){
+    int solve(int m,int n,int i,int j){
         if(i == m-1 && j == n-1){
             return 1;
         }
         int down = 0;
         int right = 0;
         if(i<m ){
-            right += solve(m,n,i+1,j,count);
+            right += solve(m,n,i+1,j);
         }
         if(j<n){
-            down += solve(m,n,i,j+1,count);
+            down += solve(m,n,i,j+1);
         }
         return right+down;
     }
-    int solveMem(int m,int n,int i,int j,int &count,vector<vector<int>>&dp){
+    int solveMem(int m,int n,int i,int j,vector<vector<int>>&dp){
         if(i == m-1 && j == n-1){
             return 1;
         }
@@ -25,17 +25,17 @@ public:
         int down = 0;
         int right = 0;
         if(i<m ){
-            right += solveMem(m,n,i+1,j,count,dp);
+            right += solveMem(m,n,i+1,j,dp);
         }
         if(j<n){
-            down += solveMem(m,n,i,j+1,count,dp);
+            down += solveMem(m,n,i,j+1,dp);
         }
         return dp[i][j] = right+down;
     }
     int uniquePaths(int m, int n) {
         int count =0;
-        // return solve(m,n,0,0,count);
+        // return solve(m,n,0,0);
         vector<vector<int>>dp(m+1,vector<int>(n+1,-1));
-        return solveMem(m,n,0,0,count,dp);
+        return solveMem(m,n,0,0,dp);
     }
 };

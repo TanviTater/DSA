@@ -1,0 +1,35 @@
+// LeetCode -> 120. Triangle
+
+class Solution {
+public:
+    int solve(vector<vector<int>>&triangle,int i,int j){
+        if(i == triangle.size()-1 && j == triangle[i].size()-1){
+            return triangle[i][j];
+        }
+        if(i>=triangle.size() || j>=triangle[i].size()){
+            return 0;
+        }
+        int down = solve(triangle,i+1,j);
+        int downR= solve(triangle,i+1,j+1);
+        return triangle[i][j] + min(down,downR);
+    }
+    int solveMem(vector<vector<int>>&triangle,int i,int j,vector<vector<int>>&dp){
+        if(i == triangle.size()-1 && j == triangle[i].size()-1){
+            return triangle[i][j];
+        }
+        if(i >= triangle.size() || j>=triangle[i].size()){
+            return 0;
+        }
+        if(dp[i][j] != INT_MAX) return dp[i][j];
+        int down = solveMem(triangle,i+1,j,dp);
+        int downR = solveMem(triangle,i+1,j+1,dp);
+        return dp[i][j] = triangle[i][j]+min(down,downR);
+    }
+    int minimumTotal(vector<vector<int>>& triangle) {
+        // return solve(triangle,0,0);
+        int m = triangle.size()-1;
+        int n = triangle[m].size();
+        vector<vector<int>>dp(m+1,vector<int>(n+1,INT_MAX));
+        return solveMem(triangle,0,0,dp);
+    }
+};

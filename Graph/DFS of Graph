@@ -1,0 +1,23 @@
+// GeeksForGeeks -> DFS of Graph
+
+class Solution {
+  public:
+    void dfs(int node,vector<vector<int>>&adj,vector<bool>&visited,vector<int>&list){
+        visited[node] = true;
+        list.push_back(node);
+        for(auto it:adj[node]){
+            if(!visited[it]){
+                visited[it] = true;
+                dfs(it,adj,visited,list);
+            }
+        }
+    }
+    vector<int> dfs(vector<vector<int>>& adj) {
+        int n =adj.size();
+        vector<bool>vis(n,false);
+        vector<int>list;
+        int start = 0;
+        dfs(start,adj,vis,list);
+        return list;
+    }
+};

@@ -1,0 +1,28 @@
+// GeeksForGeeks -> Subset Sum Problem
+
+class Solution {
+  public:
+    bool solve(vector<int>& arr,int i,int sum){
+        if(i>=arr.size()) return false;
+        if(sum < 0) return false;
+        if(sum == 0) return true;
+        bool incl = solve(arr,i+1,sum-arr[i]);
+        bool excl = solve(arr,i+1,sum);
+        return incl || excl;
+    }
+    bool solveMem(vector<int>&arr,int i,int sum,vector<vector<int>>&dp){
+        if(sum < 0) return false;
+        if(sum == 0) return true;
+        if(i>=arr.size()) return false;
+        if(dp[i][sum] != -1) return dp[i][sum];
+        bool incl = solveMem(arr,i+1,sum-arr[i],dp);
+        bool excl = solveMem(arr,i+1,sum,dp);
+        return dp[i][sum] = incl || excl;
+    }
+    bool isSubsetSum(vector<int>& arr, int sum) {
+        // return solve(arr,0,sum);
+        int n = arr.size();
+        vector<vector<int>>dp(n+1,vector<int>(sum+1,-1));
+        return solveMem(arr,0,sum,dp);
+    }
+};

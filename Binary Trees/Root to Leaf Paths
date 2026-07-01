@@ -1,0 +1,26 @@
+// GeeksForGeeks - Root to Leaf Paths
+
+class Solution {
+  public:
+    void solve(Node* root,vector<vector<int>>&ans,vector<int>&temp){
+        if(root == NULL){
+            return;
+        }
+        temp.push_back(root->data);
+        if(!root->left && !root->right){
+            ans.push_back(temp);
+        }
+        else{
+            solve(root->left,ans,temp);
+            solve(root->right,ans,temp);
+        }
+        temp.pop_back();
+    }
+    vector<vector<int>> Paths(Node* root) {
+        vector<vector<int>>ans;
+        vector<int>temp;
+        solve(root,ans,temp);
+        return ans;
+        
+    }
+};

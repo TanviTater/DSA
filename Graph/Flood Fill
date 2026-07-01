@@ -1,0 +1,33 @@
+// LeetCode -> 733. Flood Fill
+
+using pi = pair<int,int>;
+class Solution {
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& grid, int sr, int sc, int color) {
+        int m = grid.size();
+        int n = grid[0].size();
+        queue<pi>q;
+        int sColour = grid[sr][sc];
+        if (sColour == color) return grid; 
+        grid[sr][sc] = color;
+        q.push({sr,sc});
+        vector<pi>dirs = {{0,-1},{0,1},{1,0},{-1,0}};
+        while(!q.empty()){
+            auto it = q.front();
+            q.pop();
+            int row = it.first;
+            int col = it.second;
+            for(int i =0;i<4;i++){
+                int newR = row + dirs[i].first;
+                int newC = col + dirs[i].second;
+                if(newR >= 0 && newC >= 0 && newR < m && newC < n){
+                    if(grid[newR][newC] == sColour){
+                        grid[newR][newC] = color;
+                        q.push({newR,newC});
+                    }
+                }
+            }
+        }
+        return grid;
+    }
+};

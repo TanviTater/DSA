@@ -1,0 +1,35 @@
+// LeetCode -> 547. Number of Provinces
+
+class Solution {
+public:
+    int dfs(int node,vector<int>adjList[],vector<int>&visited){
+        visited[node] = true;
+        for(auto it:adjList[node]){
+            if(!visited[it]){
+                visited[it] = true;
+                dfs(it,adjList,visited);
+            }
+        }
+        return 0;
+    }
+    int findCircleNum(vector<vector<int>>& isConnected) {
+        int V = isConnected.size();
+        vector<int>adjList[V];
+        for(int i =0;i<V;i++){
+            for(int j = 0 ;j<V;j++){
+                if (isConnected[i][j] == 1 && i != j) {
+                    adjList[i].push_back(j);
+                }
+            }
+        }
+        int count =0;
+        vector<int>visited(V,false);
+        for(int i = 0;i<V;i++){
+            if(!visited[i]){
+                count++;
+                dfs(i,adjList,visited);
+            }
+        }
+        return count;
+    }
+};

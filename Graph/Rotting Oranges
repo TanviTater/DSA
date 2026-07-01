@@ -1,0 +1,48 @@
+// LeetCode -> 994. Rotting Oranges
+
+using pi = pair<int,int>;
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        queue<pi>q;
+        int m = grid.size();
+        int n = grid[0].size();
+        for(int i = 0;i<m;i++){
+            for(int j  =0;j<n;j++){
+                if(grid[i][j] == 2){
+                    q.push({i,j});
+                }
+            }
+        }
+        int count = 0;
+        vector<pi>dirs = {{0,-1},{0,1},{1,0},{-1,0}};
+        while(!q.empty()){
+            bool flag = false;
+            int size = q.size();
+            for(int j = 0;j<size;j++){
+                auto it = q.front();
+                q.pop();
+                int row = it.first;
+                int col = it.second;
+                for(int i =0;i<4;i++){
+                    int newR = row + dirs[i].first;
+                    int newC = col + dirs[i].second;
+                    if(newR >= 0 && newC >= 0 && newR < m && newC < n){
+                        if(grid[newR][newC]  == 1){
+                            grid[newR][newC] = 2;
+                            q.push({newR,newC});
+                            flag = true;
+                        }
+                    }
+                }
+            }
+            if(flag) count++;
+        }
+        for(int i = 0;i<m;i++){
+            for(int j = 0;j<n;j++){
+                if(grid[i][j] == 1) return -1;
+            }
+        }
+        return count;
+    }
+};

@@ -1,0 +1,23 @@
+// LeetCode -> 494. Target Sum
+
+class Solution {
+    int solve(vector<int>&nums,int target,int i){
+        if(i == nums.size()) return target == 0;
+        int plus = solve(nums,target-nums[i],i+1);
+        int minus = solve(nums,target+nums[i],i+1);
+        return plus+minus;
+    }
+    int solveMem(vector<int>&nums,int target,int i,map<pair<int,int>,int>&mp){
+        if(i == nums.size()) return target == 0;
+        if(mp.find({target,i}) != mp.end()) return mp[{target,i}];
+        int plus = solveMem(nums,target-nums[i],i+1,mp);
+        int minus = solveMem(nums,target+nums[i],i+1,mp);
+        return mp[{target,i}] = plus+minus;
+    }
+public:
+    int findTargetSumWays(vector<int>& nums, int target) {
+        // return solve(nums,target,0);
+        map<pair<int,int>,int>mp;
+        return solveMem(nums,target,0,mp);
+    }
+};

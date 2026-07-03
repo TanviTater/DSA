@@ -1,0 +1,36 @@
+// GeeksForGeeks -> Partitions with Given Difference
+
+using v = vector<int>;
+using vv = vector<v>;
+class Solution {
+    int solve(vector<int>&arr,int target,int i){
+        if (i == arr.size())return target == 0;
+        if (target < 0)return 0;
+        int incl = solve(arr,target-arr[i],i+1);
+        int excl = solve(arr,target,i+1);
+        return incl + excl;
+    }
+    int solveMem(v&arr,int target,int i,vv &dp){
+        if (i == arr.size())return target == 0;
+        if (target < 0)return 0;
+        if(dp[target][i] != -1) return dp[target][i];
+        int incl = solveMem(arr,target-arr[i],i+1,dp);
+        int excl = solveMem(arr,target,i+1,dp);
+        return dp[target][i] =  incl + excl;
+    }
+  public:
+    int countPartitions(vector<int>& arr, int diff) {
+        int n =arr.size();
+        int totalSum = 0;
+        for(int num : arr){
+            totalSum += num;
+        }
+        if (diff > totalSum) return 0;
+        if((totalSum + diff)%2 != 0) return 0;
+        int reqdSum = (totalSum+diff)/2;
+        // return solve(arr,reqdSum,0);
+        
+        vv dp(reqdSum+1,v(n+1,-1));
+        return solveMem(arr,reqdSum,0,dp);
+    }
+};

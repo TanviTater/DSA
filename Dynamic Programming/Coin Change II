@@ -1,0 +1,35 @@
+// LeetCode -> 518. Coin Change II
+
+using v = vector<int>;
+using vv= vector<v>;
+class Solution {
+    int solve(int amount,vector<int>&coins,int i){
+        if(i >= coins.size()) return 0;
+        if(amount == 0) return 1;
+        int take = 0;
+        if(amount-coins[i]>=0){
+            take = solve(amount-coins[i],coins,i);
+        }
+        int notTake = solve(amount,coins,i+1);
+        return take+notTake;
+    }
+    int solveMem(int amount,v &coins,int i,vv &dp){
+        if(i == coins.size()) return 0;
+        if(amount == 0) return 1;
+        if(dp[amount][i] != -1) return dp[amount][i];
+        int take = 0;
+        if(amount-coins[i] >= 0){
+            take = solveMem(amount-coins[i],coins,i,dp);
+        }
+        int notTake = solveMem(amount,coins,i+1,dp);
+        return dp[amount][i] = take+notTake;
+    }
+public:
+    int change(int amount, vector<int>& coins) {
+        // return solve(amount,coins,0);
+
+        int n = coins.size();
+        vv dp(amount+1,v(n+1,-1));
+        return solveMem(amount,coins,0,dp);
+    }
+};

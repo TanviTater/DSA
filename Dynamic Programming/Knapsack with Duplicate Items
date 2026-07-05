@@ -1,0 +1,30 @@
+// GeeksForGeeks -> Knapsack with Duplicate Items
+
+class Solution {
+    int solve(vector<int>&val,vector<int>&wt,int capacity,int i){
+        if(i == val.size() || capacity < 0) return 0;
+        int incl = 0;
+        if(capacity - wt[i] >= 0){
+            incl = val[i]+solve(val,wt,capacity-wt[i],i);
+        }
+        int excl = solve(val,wt,capacity,i+1);
+        return max(incl,excl);
+    }
+    int solveMem(vector<int>&val,vector<int>&wt,int capacity,int i,vector<vector<int>>&dp){
+        if(i == val.size() || capacity < 0) return 0;
+        if(dp[capacity][i] != -1) return dp[capacity][i];
+        int incl = 0;
+        if(capacity - wt[i] >= 0){
+            incl = val[i]+solveMem(val,wt,capacity-wt[i],i,dp);
+        }
+        int excl = solveMem(val,wt,capacity,i+1,dp);
+        return dp[capacity][i] = max(incl,excl);
+    }
+  public:
+    int knapSack(vector<int>& val, vector<int>& wt, int capacity) {
+        // return solve(val,wt,capacity,0);
+        int n = val.size();
+        vector<vector<int>>dp(capacity+1,vector<int>(n+1,-1));
+        return solveMem(val,wt,capacity,0,dp);
+    }
+};

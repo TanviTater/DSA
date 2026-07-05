@@ -1,0 +1,31 @@
+// GeeksForGeeks -> Connected Components in an Undirected Graph
+
+class Solution {
+    void dfs(int i,unordered_map<int,vector<int>>&adj,vector<bool>&visited,vector<int>&temp){
+        temp.push_back(i);
+        visited[i] = true;
+        for(auto& ngbr: adj[i]){
+            if(!visited[ngbr]){
+                dfs(ngbr,adj,visited,temp);
+            }
+        }
+    }
+  public:
+    vector<vector<int>> getComponents(int V, vector<vector<int>>& edges) {
+        unordered_map<int,vector<int>>adj;
+        for(auto&e :edges){
+            adj[e[0]].push_back(e[1]);
+            adj[e[1]].push_back(e[0]);
+        }
+        vector<bool>visited(V,false);
+        vector<vector<int>>ans;
+        for(int i =0;i<V;i++){
+            if(!visited[i]){
+                vector<int>temp;
+                dfs(i,adj,visited,temp);
+                ans.push_back(temp);
+            }
+        }
+        return ans;
+    }
+};

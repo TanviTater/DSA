@@ -1,0 +1,30 @@
+// GeekForGeeks -> Rod Cutting
+
+class Solution {
+    int solve(vector<int>&price,int i,int n){
+        if(i == price.size() || n < 0) return 0;
+        int incl = 0;
+        if(n-(i+1)>=0){
+            incl = price[i]+solve(price,i,n-(i+1));
+        }
+        int excl = solve(price,i+1,n);
+        return max(incl,excl);
+    }
+    int solveMem(vector<int>&price,int i,int n,vector<vector<int>>&dp){
+        if(i == price.size() || n < 0) return 0;
+        if(dp[i][n] != -1) return dp[i][n];
+        int incl = 0;
+        if(n-(i+1)>=0){
+            incl = price[i]+solveMem(price,i,n-(i+1),dp);
+        }
+        int excl = solveMem(price,i+1,n,dp);
+        return dp[i][n] =  max(incl,excl);
+    }
+  public:
+    int cutRod(vector<int> &price) {
+        int n = price.size();
+        // return solve(price,0,n);
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        return solveMem(price,0,n,dp);
+    }
+};

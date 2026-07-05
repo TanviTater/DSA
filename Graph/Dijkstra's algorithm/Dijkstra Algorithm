@@ -1,0 +1,35 @@
+// GeeksForGeeks -> Dijkstra Algorithm
+
+using pi = pair<int,int>;
+class Solution {
+  public:
+    vector<int> dijkstra(int V, vector<vector<int>> &edges, int src) {
+       int m = edges.size();
+       int n = edges[0].size();
+       priority_queue<pi,vector<pi>,greater<pi>>pq;
+       unordered_map<int,vector<pi>>adj;
+       vector<int>dist(V ,INT_MAX);
+       for(auto & edge:edges){
+           adj[edge[0]].push_back({edge[1],edge[2]});
+           adj[edge[1]].push_back({edge[0],edge[2]});
+       }
+       pq.push({0,src});
+       dist[src]=0;
+       while(!pq.empty()){
+           auto it = pq.top();
+           pq.pop();
+           int c = it.first;
+           int s = it.second;
+           if(c>dist[s])continue;
+           for(auto ngbr:adj[s]){
+               int newCost = c+ngbr.second;
+               if(dist[ngbr.first]>newCost){
+                   dist[ngbr.first] = newCost;
+                   pq.push({newCost,ngbr.first});
+               }
+           }
+           
+       }
+       return dist;
+    }
+};

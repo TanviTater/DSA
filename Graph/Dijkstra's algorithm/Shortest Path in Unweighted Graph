@@ -1,0 +1,29 @@
+// GeeksForGeeks -> Shortest Path in Unweighted Graph
+
+class Solution {
+  public:
+    int shortestPath(int V, vector<vector<int>> &edges, int src, int dest) {
+        unordered_map<int,vector<int>>adj;
+        vector<bool>visited(V,false);
+        queue<pair<int,int>>q;
+        q.push({src,0});
+        visited[src]=true;
+        for(auto edge:edges){
+            adj[edge[0]].push_back(edge[1]);
+            adj[edge[1]].push_back(edge[0]);
+        }
+        while(!q.empty()){
+            int node = q.front().first;
+            int dist = q.front().second;
+            q.pop();
+            if(node == dest) return dist;
+            for(auto& it:adj[node]){
+                if(!visited[it]){
+                    q.push({it,dist+1});
+                    visited[it] = true;
+                }
+            }
+        }
+        return -1;
+    }
+};

@@ -1,0 +1,39 @@
+// GeeksForGeeks -> Longest Common Subsequence
+
+using v = vector<int>;
+using vv = vector<v>;
+class Solution {
+    int solve(string& s1,string& s2,int i,int j){
+        if(i == s1.size()) return 0;
+        if(j == s2.size()) return 0;
+        int incl = 0;
+        if(s1[i] == s2[j]){
+            incl = 1+solve(s1,s2,i+1,j+1);
+        }
+        int excl = solve(s1,s2,i+1,j);
+        int skip = solve(s1,s2,i,j+1);
+        return max({incl,excl,skip});
+    }
+    int solveMem(string& s1,string& s2,int i,int j,vv&dp){
+        if(i == s1.size()) return 0;
+        if(j == s2.size()) return 0;
+        if(dp[i][j] != -1) return dp[i][j];
+        int incl = 0;
+        if(s1[i] == s2[j]){
+            incl = 1+solveMem(s1,s2,i+1,j+1,dp);
+        }
+        int excl = solveMem(s1,s2,i+1,j,dp);
+        int skip = solveMem(s1,s2,i,j+1,dp);
+        return dp[i][j]=  max({incl,excl,skip});
+    }
+  public:
+    int lcs(string &s1, string &s2) {
+        if(s2.size()>s1.size()){
+            swap(s1,s2);
+        }
+        // return solve(s1,s2,0,0);
+        vv dp(s1.size()+1,v(s2.size()+1,-1));
+        return solveMem(s1,s2,0,0,dp);
+    }
+};
+ 

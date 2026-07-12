@@ -1,0 +1,46 @@
+// LeetCode -> 210. Course Schedule II
+
+class Solution {
+    bool dfs(int node,vector<int>&visited,unordered_map<int,vector<int>>&adj,stack<int>&st,vector<int>&currVisiting){
+        visited[node] = 1;
+        currVisiting[node] =1;
+        bool cycle = false;
+        for(auto it:adj[node]){
+            if(!visited[it]){
+                cycle = dfs(it,visited,adj,st,currVisiting);
+                if(cycle) return cycle;
+            }
+            else if(currVisiting[it]){
+                cycle = true;
+                return true;
+            }
+            else continue;
+        }
+        st.push(node);
+        currVisiting[node] =0;
+        return cycle;
+    }
+public:
+    vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
+        unordered_map<int,vector<int>>adj;
+        for(auto p : prerequisites){
+            adj[p[1]].push_back(p[0]);
+        }
+        vector<int>visited(numCourses,0);
+        vector<int>currVisiting(numCourses,0);
+        stack<int>st;
+        vector<int>ans;
+        bool cycle = false;
+        for(int i =0;i<numCourses;i++){
+            if(!visited[i]){
+                cycle = dfs(i,visited,adj,st,currVisiting);
+                if(cycle) return {};
+            }
+        }
+        while(!st.empty() && !cycle){
+            ans.push_back(st.top());
+            st.pop();
+        }
+        return ans;
+    }
+};

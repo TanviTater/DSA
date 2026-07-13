@@ -1,0 +1,56 @@
+// LeetCode -> 1291. Sequential Digits
+
+class Solution {
+public:
+    vector<int> sequentialDigits(int low, int high) {
+        vector<int> ans;
+        int digits = (int)(log10(low)) + 1;
+        int numberOfDigits = digits;
+        int firstDigit = low / pow(10, digits - 1);
+        int lastDigit = low % 10;
+        bool valid = (firstDigit + digits - 1 <= 9);
+        int first = 0;
+        if (valid) {
+            int d = firstDigit;
+            int cnt = digits;
+            while (cnt) {
+                first += d * (int)pow(10, cnt - 1);
+                cnt--;
+                d++;
+            }
+        } else {
+            digits++;
+            int d = 1;
+            for (int i = 0; i < digits; i++) {
+                first = first * 10 + d;
+                d++;
+            }
+        }
+        int inc = 0;
+        for (int i = 0; i < digits; i++)
+            inc = inc * 10 + 1;
+        // cout<<" " <<first;
+        while (first <= high) {
+            if (first >= low)
+                ans.push_back(first);
+            int temp = first;
+            while (temp + inc <= high) {
+                temp += inc;
+                if (temp % 10 == 0)
+                    break;
+                ans.push_back(temp);
+            }
+            digits++;
+            first = 0;
+            int x = 1;
+            for (int i = 0; i < digits; i++) {
+                first = first * 10 + x;
+                x++;
+            }
+            inc = 0;
+            for (int i = 0; i < digits; i++)
+                inc = inc * 10 + 1;
+        }
+        return ans;
+    }
+};

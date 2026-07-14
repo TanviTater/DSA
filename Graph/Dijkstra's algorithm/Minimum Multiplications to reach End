@@ -1,0 +1,28 @@
+// GeeksForGeeks -> Minimum Multiplications to reach End
+
+using pi = pair<int,int>;
+class Solution {
+  public:
+    int minSteps(vector<int>& arr, int start, int end) {
+        priority_queue<pi,vector<pi>,greater<pi>>pq;
+        vector<int>dist(1000,INT_MAX);
+        dist[start] = 0;
+        pq.push({0,start});
+        int i =0;
+        while(!pq.empty()){
+            int steps = pq.top().first;
+            int value = pq.top().second;
+            pq.pop();
+            if(value == end) return steps;
+            if(dist[value]<steps) continue;
+            for(int i =0;i<arr.size();i++){
+                int newValue = (value*arr[i])%1000;
+                if(steps+1<dist[newValue]){
+                    dist[newValue] = steps+1;
+                    pq.push({steps+1,newValue});
+                }
+            }
+        }
+        return -1;
+    }
+};

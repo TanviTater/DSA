@@ -1,0 +1,39 @@
+// LeetCode -> 1976. Number of Ways to Arrive at Destination
+
+using pii = pair<long,long>;
+const int mod = 1e9+7;
+class Solution {
+public:
+    int countPaths(int n, vector<vector<int>>& roads) {
+        unordered_map<int, vector<vector<int>>>adj;
+        for(auto& road:roads){
+            adj[road[0]].push_back({road[1],road[2]});
+            adj[road[1]].push_back({road[0],road[2]});
+        }
+        vector<long long> dist(n, LLONG_MAX);
+        priority_queue<pii,vector<pii>,greater<pii>>pq;
+        vector<long long>numberOfWays(n,0);
+        numberOfWays[0] = 1;
+        pq.push({0,0});
+        dist[0] = 0;
+        while(!pq.empty()){
+            long long distance = pq.top().first;
+            int dest = pq.top().second;
+            pq.pop();
+            // if(dest == n-1) return distance;
+            if (distance > dist[dest]) continue;
+            for(auto it:adj[dest]){
+                long long newDist = 1LL*it[1] + distance;
+                if(dist[it[0]]>newDist){
+                    dist[it[0]] = newDist;
+                    numberOfWays[it[0]] = numberOfWays[dest];
+                    pq.push({newDist,it[0]});
+                }
+                else if(dist[it[0]] == newDist){
+                    numberOfWays[it[0]] = (numberOfWays[it[0]] + numberOfWays[dest]) % mod;
+                }
+            }
+        }
+        return numberOfWays[n-1];
+    }
+};

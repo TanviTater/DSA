@@ -1,0 +1,31 @@
+// GeeksForGeeks -> Longest Increasing Subsequence
+
+using v = vector<int>;
+using vv = vector<v>;
+class Solution {
+    int solve(vector<int>&arr,int i,int prev){
+        if(i == arr.size()) return 0;
+        int incl = 0;
+        if(prev == -1 || arr[i]>arr[prev]){
+            incl = 1+solve(arr,i+1,i);
+        }
+        int excl = solve(arr,i+1,prev);
+        return max(incl,excl);
+    }
+    int solveMem(v &arr,int i,int prev,vv&dp){
+        if(i == arr.size()) return 0;
+        if(dp[i][prev+1] != -1) return dp[i][prev+1];
+        int incl = 0;
+        if(prev == -1 || arr[i]>arr[prev]){
+            incl = 1+solveMem(arr,i+1,i,dp);
+        }
+        int excl = solveMem(arr,i+1,prev,dp);
+        return dp[i][prev+1] = max(incl,excl);
+    }
+  public:
+    int lis(vector<int>& arr) {
+        // return solve(arr,0,-1);
+        vv dp(arr.size()+1,v(arr.size()+2,-1));
+        return solveMem(arr,0,-1,dp);
+    }
+};

@@ -1,0 +1,35 @@
+// LeetCode -> 368. Largest Divisible Subset
+
+class Solution {
+public:
+    vector<int> largestDivisibleSubset(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        int n = nums.size();
+        vector<int>dp(n,0);
+        vector<int>hash(n);
+        vector<int>ans;
+        int maxi = 0;
+        int lastIndex = 0;
+        for(int curr = 0;curr<n;curr++){
+            hash[curr] = curr;
+            for(int prev = 0;prev<curr;prev++){
+                if(nums[prev] < nums[curr] && (nums[prev]%nums[curr] == 0 || nums[curr] % nums[prev] == 0) && dp[curr]<1+dp[prev]){
+                    dp[curr] = 1+dp[prev];
+                    hash[curr] = prev;
+                }
+            }
+            if(maxi < dp[curr]){
+                maxi = dp[curr];
+                lastIndex = curr;
+            }
+        }
+        ans.push_back(nums[lastIndex]);
+        while(hash[lastIndex] != lastIndex){
+            lastIndex = hash[lastIndex];
+            ans.push_back(nums[lastIndex]);
+
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};

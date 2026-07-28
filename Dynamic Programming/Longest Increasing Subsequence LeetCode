@@ -1,0 +1,83 @@
+// Leetcode -> 300. Longest Increasing Subsequence
+
+class Solution {
+public:
+int solveRec(vector<int>&nums,int n,int curr,int prev){
+    if(curr == n){
+        return 0;
+    }
+    int incl = 0;
+    if(prev == -1 || nums[prev] < nums[curr]){
+        incl = 1 + solveRec(nums,n,curr+1,curr);
+    }
+    int excl = solveRec(nums,n,curr+1,prev);
+    return max(incl,excl);
+}
+int solveMem(vector<int>&nums,int n,int curr,int prev,vector<vector<int>>&dp){
+    if(curr == n){
+        return 0;
+    }
+    if(dp[curr][prev+1] != -1){
+        return dp[curr][prev+1];
+    }
+    int incl = 0;
+    if(prev == -1 || nums[prev] < nums[curr]){
+        incl = 1 + solveMem(nums,n,curr + 1, curr,dp);
+    }
+    int excl = solveMem(nums,n,curr+1,prev,dp);
+    return dp[curr][prev+1] = max(incl,excl);
+}
+int solveTab(vector<int>& nums){
+    int n = nums.size();
+    vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+    for(int curr = n-1;curr >= 0;curr--){
+        for(int prev = curr-1;prev >=-1 ;prev--){
+            int incl = 0;
+            if(prev == -1 || nums[prev]<nums[curr]){
+                incl = 1 + dp[curr+1][curr+1];
+            }
+            int excl = dp[curr+1][prev+1];
+            dp[curr][prev+1] = max(incl,excl);
+        }
+    }
+    return dp[0][0];
+}
+int solveTab2(vector<int>& nums){
+    int n = nums.size();
+    vector<int>dp(n,1);
+    int maxi = 1;
+    for(int i =0;i<n;i++){
+        for(int prev= 0;prev<i;prev++){
+            if(nums[prev]<nums[i]){
+                dp[i] = max(dp[i],1+dp[prev]);
+            }
+        }
+        maxi = max(maxi,dp[i]);
+    }
+    return maxi;
+}
+    int lengthOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        // return solveRec(nums,n,0,-1);
+
+        vector<vector<int>>dp(n,vector<int>(n+1,-1));
+        // return solveMem(nums,n,0,-1,dp);
+
+        // return solveTab(nums);
+
+        // return solveTab2(nums);
+
+        vector<int>temp;
+        temp.push_back(nums[0]);
+        for(int i = 1;i<nums.size();i++){
+            if(nums[i]>temp.back()){
+                temp.push_back(nums[i]);
+            }
+            else{
+                int ind = lower_bound(temp.begin(),temp.end(),nums[i])-temp.begin();
+                temp[ind] = nums[i];
+            }
+        }
+        return temp.size();
+    }
+};

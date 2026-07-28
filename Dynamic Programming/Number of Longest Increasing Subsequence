@@ -1,0 +1,38 @@
+// LeetCode -> 673. Number of Longest Increasing Subsequence
+
+class Solution {
+public:
+    int findNumberOfLIS(vector<int>& nums) {
+        int n = nums.size();
+        vector<int>dp(n,1);
+        vector<int>hash(n);
+        vector<int>count(n,1);
+        int lastIndex = 0;
+        int maxi = 1;
+        for(int curr = 0;curr<n;curr++){
+            for(int prev = 0;prev<curr;prev++){
+                if(nums[prev]<nums[curr] && dp[curr]<1+dp[prev]){
+                    dp[curr] = 1+dp[prev];
+                    hash[curr] = prev; 
+                    count[curr] = count[prev];
+                }
+                else if(nums[prev]<nums[curr] && dp[curr]==1+dp[prev]){
+                    dp[curr] = 1+dp[prev];
+                    hash[curr] = prev; 
+                    count[curr] += count[prev];
+                }
+            }
+            if(maxi < dp[curr]){
+                maxi = dp[curr];
+                lastIndex = curr;
+            }
+        }
+        int ans =0;
+        for(int i = 0;i<n;i++){
+            if(dp[i] == maxi){
+                ans += count[i];
+            }
+        }
+        return ans;
+    }
+};

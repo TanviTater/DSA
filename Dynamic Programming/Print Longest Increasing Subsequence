@@ -1,0 +1,49 @@
+// GeeksForGeeks -> Print Longest Increasing Subsequence
+
+class Solution {
+  public:
+    vector<int> getLIS(vector<int>& arr) {'
+        // Code for LIS
+        // int n = arr.size();
+        // vector<int>dp(n+1,1);
+        // int maxi = 1;
+        // for(int curr = 0;curr<n;curr++){
+        //     for(int prev = 0;prev<curr;prev++){
+        //         if(arr[prev]<arr[curr]){
+        //             dp[curr] = max(dp[curr],1+dp[prev]);
+        //         }
+        //     }
+        //     maxi = max(maxi,dp[curr]);
+        // }
+        // return {maxi};
+
+
+        // Code for Printing the Lis
+        int n = arr.size();
+        vector<int>dp(n,1);
+        vector<int>hash(n);
+        vector<int>ans;
+        int maxi = 1;
+        int lastIndex = 0;
+        for(int curr =0;curr<n;curr++){
+            hash[curr] = curr;
+            for(int prev = 0;prev<curr;prev++){
+                if(arr[prev]<arr[curr] && dp[curr]<1+dp[prev]){
+                    dp[curr] = 1+dp[prev];
+                    hash[curr] = prev; 
+                }
+            }
+            if(maxi<dp[curr]){
+                maxi = dp[curr];
+                lastIndex = curr;
+            }
+        }
+        ans.push_back(arr[lastIndex]);
+        while(hash[lastIndex] != lastIndex){
+            lastIndex = hash[lastIndex];
+            ans.push_back(arr[lastIndex]);
+        }
+        reverse(ans.begin(),ans.end());
+        return ans;
+    }
+};

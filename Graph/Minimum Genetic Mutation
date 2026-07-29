@@ -1,0 +1,59 @@
+// LeetCode -> 433. Minimum Genetic Mutation
+
+class Solution {
+public:
+    int minMutation(string startGene, string endGene, vector<string>& bank) {
+        int level = 0;
+        if(startGene == endGene) return 0;
+        queue<string>q;
+        q.push(startGene);
+        set<string>st(bank.begin(),bank.end());
+        while(!q.empty()){
+            int size = q.size();
+            for(int i = 0;i<size;i++){
+                string word = q.front();
+                q.pop();
+                for(int j = 0;j<word.size();j++){
+                    char temp = word[j];
+                    if(temp != 'A'){
+                        word[j] = 'A';
+                        if(st.find(word) != st.end()){
+                            st.erase(word);
+                            q.push(word);
+                            if(word == endGene) return level+1;
+                        }
+                        word[j] = temp;
+                    }
+                    if(temp != 'C'){
+                        word[j] = 'C';
+                        if(st.find(word) != st.end()){
+                            st.erase(word);
+                            q.push(word);
+                            if(word == endGene) return level+1;
+                        }
+                        word[j] = temp;
+                    }
+                    if(temp != 'G'){
+                        word[j] = 'G';
+                        if(st.find(word) != st.end()){
+                            st.erase(word);
+                            q.push(word);
+                            if(word == endGene) return level+1;
+                        }
+                        word[j] = temp;
+                    }
+                    if(temp != 'T'){
+                        word[j] = 'T';
+                        if(st.find(word) != st.end()){
+                            st.erase(word);
+                            q.push(word);
+                            if(word == endGene) return level+1;
+                        }
+                        word[j] = temp;
+                    }
+                }
+            }level++;
+        }
+        return -1;
+    }
+};

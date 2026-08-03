@@ -1,0 +1,24 @@
+// LeetCode -> 1406. Stone Game III
+
+class Solution {
+    int solve(vector<int>&stones,int i,vector<int>&dp){
+        if(i>=stones.size()) return 0;
+        if(dp[i] != INT_MAX) return dp[i];
+        dp[i] = stones[i]-solve(stones,i+1,dp);
+        if(i+1<stones.size()) 
+            dp[i] = max(dp[i],stones[i]+stones[i+1] -solve(stones,i+2,dp));
+        int pickThird =INT_MIN;
+        if(i+2<stones.size()) 
+            dp[i]= max(dp[i],stones[i]+stones[i+1]+stones[i+2]-solve(stones,i+3,dp));
+        return dp[i];
+    }
+public:
+    string stoneGameIII(vector<int>& stoneValue) {
+        int n = stoneValue.size();
+        vector<int>dp(n+1,INT_MAX);
+        int value = solve(stoneValue,0,dp);
+        if(value == 0) return "Tie";
+        else if(value>0) return "Alice";
+        return "Bob";
+    }
+};

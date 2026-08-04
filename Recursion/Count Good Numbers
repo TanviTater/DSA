@@ -1,0 +1,39 @@
+// LeetCode -> 1922. Count Good Numbers
+
+const int mod = 1e9+7;
+class Solution {
+    int solve(long long n){
+        if(n == 1) return 5;
+        if(n == 2) return 20;
+        if(n%2) return 1LL*(solve(n-1)%mod*5LL)%mod;
+        return 1LL*(solve(n-1)%mod*4LL)%mod;
+    }
+    long long xPowerN(long long x,long long n){
+        if(n==0){
+            return 1;
+        }
+        if(n==1){
+            return x%mod;
+        }
+        long long ans=xPowerN(x,n/2);
+        if(n%2){
+            return (1LL*(x*ans)%mod*(ans))%mod;
+        }
+        else{
+            return (1LL * ans * ans) % mod;
+        }
+    }
+public:
+    int countGoodNumbers(long long n) {
+        // n = 1 -> 5;
+        // n = 2 -> 20;
+        // n = 3 -> 100;
+        // n = 4 -> 400;
+        // n = 5 -> 2000;
+        // n = 6 -> 8000;
+        long long five = n/2;
+        long long four = n/2;
+        if(n%2) return (xPowerN(5,five+1)%mod*(xPowerN(4,four))%mod)%mod;
+        return (xPowerN(5,five)%mod*(xPowerN(4,four))%mod)%mod;
+    }
+};

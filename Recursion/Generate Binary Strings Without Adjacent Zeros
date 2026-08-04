@@ -1,0 +1,27 @@
+// LeetCode -> 3211. Generate Binary Strings Without Adjacent Zeros
+
+class Solution {
+    void solve(int n,int i,string&temp,vector<string>&ans,bool zero){
+        if(i == n){
+            ans.push_back(temp);
+            return;
+        }
+        if(!zero){
+            temp.push_back('0');
+            solve(n,i+1,temp,ans,!zero);
+            temp.pop_back();
+            zero = !zero;
+        }
+        temp.push_back('1');
+        solve(n,i+1,temp,ans,!zero);
+        temp.pop_back();
+    }
+public:
+    vector<string> validStrings(int n) {
+        vector<string>ans;
+        string temp = "";
+        bool zero = false;
+        solve(n,0,temp,ans,zero);
+        return ans;
+    }
+};

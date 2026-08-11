@@ -1,0 +1,37 @@
+// GFG -> Floor in BST
+
+// M->1 
+class Solution {
+  public:
+    int findMaxFork(Node* root, int k) {
+        int floorVal = -1;
+        while(root){
+            if(root->data == k) return root-> data;
+            else if(root->data<k){
+                floorVal = root->data;
+                root = root->right;
+            }
+            else{
+                root = root->left;
+            }
+        }
+        return floorVal;
+    }
+};
+
+// M-> 2(Less Preferrable)
+class Solution {
+  public:
+    int posAns = INT_MIN;
+    int findMaxFork(Node* root, int k) {
+        if(!root) return posAns == INT_MIN?-1:posAns;
+        if(root->data<=k){
+            posAns = max(posAns,root->data);
+            return findMaxFork(root->right,k);
+        }
+        else{
+            return findMaxFork(root->left,k);
+        }
+        return posAns == INT_MIN?-1:posAns;
+    }
+};

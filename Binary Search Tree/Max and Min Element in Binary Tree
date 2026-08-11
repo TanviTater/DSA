@@ -1,0 +1,18 @@
+// GFG -> Max and Min Element in Binary Tree
+
+class Solution {
+  public:
+    int findMax(Node *root) {
+        if(!root) return INT_MIN;
+        int rootL = findMax(root->left);
+        int rootR = findMax(root->right);
+        return max({root->data,rootL,rootR});
+    }
+
+    int findMin(Node *root) {
+        if(!root) return INT_MAX;
+        int rootL = findMin(root->left);
+        int rootR = findMin(root->right);
+        return min({root->data,rootL,rootR});
+    }
+};

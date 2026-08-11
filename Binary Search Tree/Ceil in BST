@@ -1,0 +1,39 @@
+// GFG -> Ceil in BST
+
+// M->1
+class Solution {
+  public:
+    int findCeil(Node* root, int x) {
+        int ceilVal = -1;
+        while(root){
+            if(root -> data == x){
+                return root->data;
+            }
+            else if(root->data > x){
+                ceilVal = root->data;
+                root = root->left;
+            }
+            else{
+                root = root->right;
+            }
+        }
+        return ceilVal;
+    }
+};
+
+// M->2 (Less Preferrable)
+class Solution {
+  public:
+    int posAns = INT_MAX;
+    int findCeil(Node* root, int x) {
+        if(!root) return posAns == INT_MAX?-1:posAns;
+        if(root -> data >= x){
+            posAns = min(posAns,root->data);
+            return findCeil(root->left,x);
+        }
+        else{
+            return findCeil(root->right,x);
+        }
+        return posAns == INT_MAX?-1:posAns;
+    }
+};

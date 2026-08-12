@@ -1,0 +1,21 @@
+// LeetCode-> 671. Second Minimum Node In a Binary Tree
+
+class Solution {
+    void inorder(TreeNode* root,vector<int>&ans){
+        if(!root) return ;
+        inorder(root->left,ans);
+        ans.push_back(root->val);
+        inorder(root->right,ans);
+    }
+public:
+    int findSecondMinimumValue(TreeNode* root) {
+        if(!root) return -1;
+        vector<int>ans;
+        inorder(root,ans);
+        sort(ans.begin(),ans.end());
+        for(int i =1;i<ans.size();i++){
+            if(ans[i] != ans[i-1]) return ans[i];
+        }
+        return -1;
+    }
+};
